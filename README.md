@@ -17,8 +17,7 @@ In terminal, type "node liri-bot.js spotify-this-song <song name>" (without the 
 <img width="707" alt="screen shot" src="https://user-images.githubusercontent.com/42022001/49035977-006a3800-f17c-11e8-9aec-53078dfeb5e5.png">
 
 
-In termila, type "node liri-bot.js movie-this <movie name>" (without the qotation marks)
- <img width="93" alt="screen shot" src="https://user-images.githubusercontent.com/42022001/49038361-580ba200-f182-11e8-9085-6bca64b1d43f.png">
+
   
   
 In termila, type "node liri-bot.js do-what-it-says" (without the qotation marks)
