@@ -47,19 +47,19 @@ function concertThis() {
 			let band = JSON.parse(body);
 			for (let i = 0; i < band.length; i++) {
 				console.log(
-					`----------------------------\nName of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue
+					`Name of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue
 						.city}, ${band[i].venue.region}, ${band[i].venue.country}\nDate of the Event: ${moment(
 						band[i].datetime
-					).format('dddd, MMMM Do YYYY, h:mm:ss a')}\n----------------------------`
+					).format('dddd, MMMM Do YYYY, h:mm:ss a')}`
 				);
 
 				//add to log.txt
 				fs.appendFile(
 					'log.txt',
-					`----------------------------\nName of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue
+					`Name of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue
 						.city}, ${band[i].venue.region}, ${band[i].venue.country}\nDate of the Event: ${moment(
 						band[i].datetime
-					).format('dddd, MMMM Do YYYY, h:mm:ss a')}\n----------------------------`,
+					).format('dddd, MMMM Do YYYY, h:mm:ss a')}`,
 					function(error) {
 						if (error) {
 							console.log(error);
@@ -83,28 +83,38 @@ function spotifyThisSong() {
 		let spotifyArray = data.tracks.items;
 
 		for (i = 0; i < spotifyArray.length; i++) {
-			console.log(`\n------------------\n\nArtist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i].name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album.nam}\n\n--------`)
+			console.log(`Artist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i].name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album.name}`)
 
 		};
+
+		//add to log.txt
+		fs.appendFile(
+			'log.txt',
+			`Artist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i].name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album.name}`,
+			function(error) {
+				if (error) {
+					console.log(error);
+				}
+			}
+		);
 	});
 }
 
 // Liri searches for movie
 
 function movieThis (){
-	if (!userQuery) {userQuery = "Mr. Nobody"}
-		request("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=40e9cece", function(error, response,body) {
-		let userMovie = JSON.parse(body);
-		let ratingArray= userMovie.Ratings;
-		if (ratingArray.length>2)
+	if (!userQuery) {userQuery = "Mr. Nobody"; };
+		request("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=3525be89", function(error, response,body) {
+		let aboutMovie = JSON.parse(body);
+		
 		if (!error && response.statusCode === 200){
-			console.log(`\n--------------\n\nTitle: ${userMovie.Title}\nCast: ${userMovie.Actors}\nReleased: ${userMovie.Year}\nIMDB Rating: ${userMovie.imdbRating}\nRotten Tomatoes Rating: ${userMovie.Rating[1].Value}\nCountry: ${userMovie.Country}\nLanguage: ${userMovie.Language}\nPlot: ${userMovie.Plot}\n\n-----`)
+			console.log(`Title: ${aboutMovie.Title}\nRelease Year: ${aboutMovie.Year}\nIMDB Rating: ${aboutMovie.imdbRating}\nRotten Tomatoes Rating: ${aboutMovie.Ratings[0].Value}\nCountry: ${aboutMovie.Country}\nLanguage: ${aboutMovie.Language}\nPlot: ${aboutMovie.Plot}\nActors: ${aboutMovie.Actors}`);
 		}else {
 			return console.log("Error: " + error)
 		};
 	
 	})
-}
+};
 
 // Liri does what it says
 
