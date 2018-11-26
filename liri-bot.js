@@ -45,36 +45,38 @@ function concertThis() {
 	) {
 		if (!error && response.statusCode == 200) {
 			let band = JSON.parse(body);
-			for (let i = 0; i < band.length; i++) {
-				console.log(
-					`Name of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue
-						.city}, ${band[i].venue.region}, ${band[i].venue.country}\nDate of the Event: ${moment(
-						band[i].datetime
-					).format('dddd, MMMM Do YYYY, h:mm:ss a')}`
-				);
-
+			if (band.length > 0) {
+				for (let i = 0; i < band.length; i++) {
+					console.log(
+						`Name of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue.city}, ${band[i].venue
+							.region}, ${band[i].venue.country}\nDate of the Event: ${moment(band[i].datetime).format(
+							'dddd, MMMM Do YYYY, h:mm:ss a'
+						)}`
+					);
+				}
 				//add to log.txt
 				fs.appendFile(
 					'log.txt',
-					`Name of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue
-						.city}, ${band[i].venue.region}, ${band[i].venue.country}\nDate of the Event: ${moment(
-						band[i].datetime
-					).format('dddd, MMMM Do YYYY, h:mm:ss a')}`,
+					`Name of Venue: ${band[i].venue.name}\nVenue Location: ${band[i].venue.city}, ${band[i].venue
+						.region}, ${band[i].venue.country}\nDate of the Event: ${moment(band[i].datetime).format(
+						'dddd, MMMM Do YYYY, h:mm:ss a'
+					)}`,
 					function(error) {
 						if (error) {
 							console.log(error);
 						}
-					}
-				);
+					});
 			}
+		} else {
+			console.log(error);
 		}
 	});
-}
+};
 
 // Liri searches for songs
 function spotifyThisSong() {
 	if (!userQuery) {
-		userQuery = '"The Sign" by Ace of Base'
+		userQuery = '"The Sign" by Ace of Base';
 	}
 	spotify.search({ type: 'track', query: userQuery, limit: 1 }, function(error, data) {
 		if (error) {
@@ -83,14 +85,18 @@ function spotifyThisSong() {
 		let spotifyArray = data.tracks.items;
 
 		for (i = 0; i < spotifyArray.length; i++) {
-			console.log(`Artist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i].name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album.name}`)
-
-		};
+			console.log(
+				`Artist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i]
+					.name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album
+					.name}`
+			);
+		}
 
 		//add to log.txt
 		fs.appendFile(
 			'log.txt',
-			`Artist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i].name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album.name}`,
+			`Artist: ${spotifyArray[i].album.artists[0].name}\nSong: ${spotifyArray[i]
+				.name}\nSpotify link: ${spotifyArray[i].external_urls.spotify}\nAlbum: ${spotifyArray[i].album.name}`,
 			function(error) {
 				if (error) {
 					console.log(error);
@@ -102,30 +108,39 @@ function spotifyThisSong() {
 
 // Liri searches for movie
 
-function movieThis (){
-	if (!userQuery) {userQuery = "Mr. Nobody"; };
-		request("http://www.omdbapi.com/?t=" + userQuery + "&y=&plot=short&apikey=3525be89", function(error, response,body) {
+function movieThis() {
+	if (!userQuery) {
+		userQuery = 'Mr. Nobody';
+	}
+	request('http://www.omdbapi.com/?t=' + userQuery + '&y=&plot=short&apikey=3525be89', function(
+		error,
+		response,
+		body
+	) {
 		let aboutMovie = JSON.parse(body);
-		
-		if (!error && response.statusCode === 200){
-			console.log(`Title: ${aboutMovie.Title}\nRelease Year: ${aboutMovie.Year}\nIMDB Rating: ${aboutMovie.imdbRating}\nRotten Tomatoes Rating: ${aboutMovie.Ratings[0].Value}\nCountry: ${aboutMovie.Country}\nLanguage: ${aboutMovie.Language}\nPlot: ${aboutMovie.Plot}\nActors: ${aboutMovie.Actors}`);
-		}else {
-			return console.log("Error: " + error)
-		};
-	
-	})
-};
+
+		if (!error && response.statusCode === 200) {
+			console.log(
+				`Title: ${aboutMovie.Title}\nRelease Year: ${aboutMovie.Year}\nIMDB Rating: ${aboutMovie.imdbRating}\nRotten Tomatoes Rating: ${aboutMovie
+					.Ratings[0]
+					.Value}\nCountry: ${aboutMovie.Country}\nLanguage: ${aboutMovie.Language}\nPlot: ${aboutMovie.Plot}\nActors: ${aboutMovie.Actors}`
+			);
+		} else {
+			return console.log('Error: ' + error);
+		}
+	});
+}
 
 // Liri does what it says
 
-function doWhatItSays(){
-fs.readFile("random.txt", "utf8", function(error, data){
-	if (error) {
-		return console.log(error);
-	}
-	let dataArray=data.split(",");
-	userInput = dataArray[0];
-	userQuery = dataArray[1];
-	userCommand(userInput, userQuery);
-});
+function doWhatItSays() {
+	fs.readFile('random.txt', 'utf8', function(error, data) {
+		if (error) {
+			return console.log(error);
+		}
+		let dataArray = data.split(',');
+		userInput = dataArray[0];
+		userQuery = dataArray[1];
+		userCommand(userInput, userQuery);
+	});
 }
