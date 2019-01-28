@@ -14,7 +14,7 @@ let bandsintown = keys.bandsintown;
 let input = process.argv[2];
 let userQuery = process.argv.slice(3).join(' ');
 
-// make a decsion based on the command
+// make a decision based on the command
 function userCommand(input, userQuery) {
 	switch (input) {
 		case 'concert-this':
